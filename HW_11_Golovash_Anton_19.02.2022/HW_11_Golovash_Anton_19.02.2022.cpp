@@ -1,60 +1,81 @@
 ﻿#include <iostream>
+#include <fstream>
 #include <vector>
 #include <map>
+#include <set>
 #include <algorithm>
 
 using namespace std;
 
-class PhoneBook
+class Subscriber
 {
 public:
-	PhoneBook(string phoneNumber, string surname, string initials)
+	Subscriber()
+	{
+		this->phoneNumber = "Default Number";
+		this->surname = "Default Surname";
+		this->name = "Default Name";
+	}
+	Subscriber(string phoneNumber, string surname, string name)
 	{
 		this->phoneNumber = phoneNumber;
 		this->surname = surname;
-		this->initials = initials;
+		this->name = name;
 	}
-	~PhoneBook()
+	~Subscriber()
 	{
 		delete this;
 	}
-	string phoneNumber { "default" };
-	string surname { "default" };
-	string initials { "default" };
+	string phoneNumber;
+	string surname;
+	string name;
 };
 
+Subscriber& Search(const string &data)
+{
+
+}
 
 int main()
 {
-	vector<PhoneBook> setPhoneBook
+	set <Subscriber> PhoneBookSet
 	{
-		PhoneBook("+380956347984","Петров","С.П."),
-		PhoneBook("+380673596842","Самбуров","Р.Е."),
-		PhoneBook("+380669845632","Крайнев","И.Н."),
-		PhoneBook("","",""),
-		PhoneBook("","",""),
-		PhoneBook("","",""),
-		PhoneBook("","",""),
-		PhoneBook("","",""),
-		PhoneBook("","",""),
-		PhoneBook("","",""),
+		Subscriber("+380956347984","Petrov","Sergey"),
+		Subscriber("+380673596842","Samburov","Roman"),
+		Subscriber("+380669845632","Kraynev","Igor"),
 	};
 
-	sort (setPhoneBook.begin(), setPhoneBook.end(), [](const PhoneBook& P1, const PhoneBook& P2)
-		{ return P1.surname < P2.surname; });
+	multiset <Subscriber> PhoneBookMultiSet;
+	map <int, Subscriber> PhoneBookMap;
+	multimap <int, Subscriber> PhoneBookMultiMap;
 
-	auto findIfResult = find_if (setPhoneBook.begin(), setPhoneBook.end(), [](const PhoneBook &P)
+	string data = "";
+
+	while (true)
+	{
+		cout << "For searching, please, enter the data" << endl;
+		cin >> data;
+		auto findIfResult = find_if(PhoneBookSet.begin(), PhoneBookSet.end(), [data](const Subscriber& P)
 		{
-			return P.surname == "Самбуров";
+				if (P.phoneNumber == data || P.surname == data || P.name == data)
+				{
+					return &P;
+				}
 		});
 
-	if (findIfResult == setPhoneBook.end())
-	{
-		cout << "Строка НЕ найдена" << endl;
+		if (findIfResult == PhoneBookSet.end())
+		{
+			cout << "String is NOT found" << endl;
+		}
+		else
+		{
+			cout << "String is found" << endl;
+		}
+
 	}
-	else
-	{
-		cout << "Строка найдена" << endl;
-	}
+	
+	//sort (PhoneBookVector.begin(), PhoneBookVector.end(), [](const Subscriber& P1, const Subscriber& P2)
+	//	{ return P1.surname < P2.surname; });
+
 	return 0;
 }
